@@ -1,16 +1,35 @@
 
+// import Todo from '../model/Todo';
+
 export default class HomeController {
 
-	// ngAnnotate understand this string literal and annotates this method.
+	/*
+	  The below annotation will be processes by ngAnnotate, which
+	  will annotate the constructor after compiling for minification.
+	*/
 	/*@ngInject*/
-	constructor($scope, PersonService) {
+	constructor(TodoService) {
 
 		var vm = this;	// the this keyword is contextual, use a capture variable for this
-
-		PersonService.getPerson().then(function(person) {
-			vm.person = person;
-		});
 		
+		vm.service = TodoService;
+
+	    (() => {
+	    	vm.service.list()
+		    	.then(result => {
+			    	vm.todos = result;
+			    });
+	    })();
+
+	    vm.addTodo = () => {
+	    	let todo = {
+				title: vm.newTodo,
+				completed: false
+			};
+			vm.service.save(todo)
+				.then(function(){
+					vm.newTodo = '';
+				});
+		};
 	}
-	
 }

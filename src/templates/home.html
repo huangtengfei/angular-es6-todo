@@ -1,1 +1,25 @@
-Hello {{ vm.person.name | upper}}!
+<style>
+	.new-todo {
+		height: 50px;
+	}
+	.todo {
+		height: 45px;
+	}
+	.completed {
+		text-decoration: line-through;
+	}
+</style>
+
+<form ng-submit="vm.addTodo()" class="col-xs-6 col-xs-offset-3">
+	<input type="text" class="form-control new-todo" ng-model="vm.newTodo" 
+		placeholder="What needs to be done?">
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="t in vm.todos">
+			<input type="checkbox" ng-model="t.completed">
+			<span ng-class="{true: 'completed'}[t.completed]">{{t.title}}</span>
+		</li>
+		<li class="list-group-item">
+			<span>{{}} item left</span>
+		</li>
+	</ul>
+</form>
