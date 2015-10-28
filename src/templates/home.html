@@ -1,25 +1,53 @@
 <style>
 	.new-todo {
-		height: 50px;
+		height: 55px;
 	}
 	.todo {
-		height: 45px;
+		position: relative;
+		height: 50px;
 	}
 	.completed {
 		text-decoration: line-through;
 	}
+	.remove {
+		display: none;
+		position: absolute;
+		top: 11px;
+		right: 16px;
+		color: #cc9a9a;
+		font-size: 16px;
+		cursor: pointer;
+	}
+	.todo:hover .remove {
+		display: block;
+	}
+	.footer span {
+		margin-right: 10px;
+	}
+	.footer span:first-child {
+		margin-right: 100px;
+	}
+	.clear-btn:hover{
+		text-decoration: underline;
+		cursor: pointer;
+	}
 </style>
 
-<form ng-submit="vm.addTodo()" class="col-xs-6 col-xs-offset-3">
+<form ng-submit="vm.add()" class="col-xs-6 col-xs-offset-3">
 	<input type="text" class="form-control new-todo" ng-model="vm.newTodo" 
 		placeholder="What needs to be done?">
 	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="t in vm.todos">
-			<input type="checkbox" ng-model="t.completed">
+		<li class="list-group-item todo" ng-repeat="t in vm.todos">
+			<input type="checkbox" ng-model="t.completed" ng-change="vm.toggleCompleted(t, $index)">
 			<span ng-class="{true: 'completed'}[t.completed]">{{t.title}}</span>
+			<span class="remove" ng-click="vm.remove($index)">X</span>
 		</li>
-		<li class="list-group-item">
-			<span>{{}} item left</span>
+		<li class="list-group-item footer">
+			<span>{{vm.uncompleted}} item left</span>
+			<span>All</span>
+			<span>Active</span>
+			<span>Completed</span>
+			<span class="pull-right clear-btn" ng-click="vm.clearCompleted()">Clear Completed</span>
 		</li>
 	</ul>
 </form>
