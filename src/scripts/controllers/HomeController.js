@@ -41,7 +41,7 @@ export default class HomeController {
 				})
 				.finally(() => {
 					vm.pending = false;
-				})
+				});
 		};
 
 		vm.toggleCompleted = (item, index) => {
@@ -63,6 +63,6 @@ export default class HomeController {
 			vm.status = (status === 1) ? 'all' : (status === 2) ? 'active' : 'completed';
 			vm.statusFilter = (status === 1) ? 
 					{} : (status === 2) ? {completed: false} : {completed: true};
-		}
+		};
 	}
 }

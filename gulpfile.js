@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var babelify = require('babelify');
+var concat = require('gulp-concat'); 
+var minifyCss = require('gulp-minify-css');  
 var browserify = require('browserify');
 var vinylSourceStream = require('vinyl-source-stream');
 var vinylBuffer = require('vinyl-buffer');
@@ -8,8 +10,9 @@ var vinylBuffer = require('vinyl-buffer');
 var plugins = require('gulp-load-plugins')();
 
 var src = {
-	html: 'src/**/*.html',
+	templates: 'src/**/*.html',
 	libs: 'src/libs/**',
+	styles: 'src/styles/**/*.css',
 	scripts: {
 		all: 'src/scripts/**/*.js',
 		app: 'src/scripts/app.js'
@@ -19,17 +22,28 @@ var src = {
 var build = 'build/';
 var out = {
 	libs: build + 'libs/',
+	styles: {
+		file: 'app.min.css',
+		folder: build + 'styles/'
+	},
 	scripts: {
 		file: 'app.min.js',
 		folder: build + 'scripts/'
 	}
 }
 
-gulp.task('html', function() {
-	return gulp.src(src.html)
+gulp.task('templates', function() {
+	return gulp.src(src.templates)
 		.pipe(gulp.dest(build))
 		.pipe(plugins.connect.reload());
 });
+
+gulp.task('styles', function(){
+	return gulp.src(src.styles)
+		.pipe(concat(out.styles.file))
+		.pipe(minifyCss())
+		.pipe(gulp.dest(out.styles.folder));
+})
 
 /* The jshint task runs jshint with ES6 support. */
 gulp.task('jshint', function() {
@@ -86,9 +100,10 @@ gulp.task('serve', ['build', 'watch'], function() {
 
 gulp.task('watch', function() {
 	gulp.watch(src.libs, ['libs']);
-	gulp.watch(src.html, ['html']);
+	gulp.watch(src.templates, ['templates']);
+	gulp.watch(src.styles, ['styles']);
 	gulp.watch(src.scripts.all, ['scripts']);
 })
 
-gulp.task('build', ['scripts', 'html', 'libs']);
+gulp.task('build', ['scripts', 'styles', 'templates', 'libs']);
 gulp.task('default', ['serve']);

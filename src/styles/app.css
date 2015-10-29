@@ -1,0 +1,79 @@
+.main {
+	box-shadow: 0 0 10px #ccc;
+	margin-top: 50px;
+	padding: 0;
+}
+.new-todo {
+	height: 55px;
+}
+.list-group {
+	margin-bottom: 0;
+}
+.todo {
+	position: relative;
+	padding: 15px 60px 15px 15px;
+}
+.toggle {
+	text-align: center;
+	width: 40px;
+	height: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	margin: auto 0;
+	border: none;
+	outline: none !important;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.toggle:after {
+	content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>');
+}
+
+.toggle:checked:after {
+	content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>');
+}
+
+.completed {
+	text-decoration: line-through;
+	color: #aaa;
+}
+.remove {
+	display: none;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	color: #cc9a9a;
+	font-size: 16px;
+	cursor: pointer;
+}
+.todo:hover .remove {
+	display: block;
+}
+.todo .content {
+	font-size: 16px;
+	margin-left: 50px;
+}
+.footer span {
+	margin-right: 10px;
+}
+.footer span:first-child {
+	margin-right: 100px;
+}
+.filter-btn {
+	padding: 3px 8px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	cursor: pointer;
+}
+.filter-btn:hover {
+	border-color: rgba(175, 47, 47, 0.1);
+}
+.filter-btn.selected {
+	border-color: rgba(175, 47, 47, 0.2);
+}
+.clear-btn:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}

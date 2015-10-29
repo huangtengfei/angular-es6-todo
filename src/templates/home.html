@@ -1,65 +1,23 @@
-<style>
-	.new-todo {
-		height: 55px;
-	}
-	.todo {
-		position: relative;
-		height: 50px;
-	}
-	.completed {
-		text-decoration: line-through;
-	}
-	.remove {
-		display: none;
-		position: absolute;
-		top: 11px;
-		right: 16px;
-		color: #cc9a9a;
-		font-size: 16px;
-		cursor: pointer;
-	}
-	.todo:hover .remove {
-		display: block;
-	}
-	.footer span {
-		margin-right: 10px;
-	}
-	.footer span:first-child {
-		margin-right: 100px;
-	}
-	.filter-btn {
-		padding: 3px 5px;
-		border: 1px solid transparent;
-		border-radius: 4px;
-		cursor: pointer;
-	}
-	.filter-btn:hover {
-		border-color: rgba(175, 47, 47, 0.1);
-	}
-	.filter-btn.selected {
-		border-color: rgba(175, 47, 47, 0.2);
-	}
-	.clear-btn:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-</style>
 
-<form ng-submit="vm.add()" class="col-xs-6 col-xs-offset-3">
-	<input type="text" class="form-control new-todo" ng-model="vm.newTodo" 
-		placeholder="What needs to be done?">
-	<ul class="list-group">
-		<li class="list-group-item todo" ng-repeat="t in vm.todos | filter:vm.statusFilter">
-			<input type="checkbox" ng-model="t.completed" ng-disabled="vm.pending" ng-change="vm.toggleCompleted(t, $index)">
-			<span ng-class="{true: 'completed'}[t.completed]">{{t.title}}</span>
-			<span class="remove" ng-click="vm.remove($index)">X</span>
-		</li>
-		<li class="list-group-item footer">
-			<span>{{vm.uncompleted}} item left</span>
-			<span class="filter-btn" ng-class="{selected: vm.status=='all'}" ng-click="vm.filterTodo(1)">All</span>
-			<span class="filter-btn" ng-class="{selected: vm.status=='active'}" ng-click="vm.filterTodo(2)">Active</span>
-			<span class="filter-btn" ng-class="{selected: vm.status=='completed'}" ng-click="vm.filterTodo(3)">Completed</span>
-			<span class="pull-right clear-btn" ng-click="vm.clearCompleted()">Clear Completed</span>
-		</li>
-	</ul>
-</form>
+<section class="col-xs-6 col-xs-offset-3 main">
+	<form ng-submit="vm.add()" >
+		<input type="text" class="form-control new-todo" ng-model="vm.newTodo" 
+			placeholder="What needs to be done?">
+	</form>
+	<section>
+		<ul class="list-group">
+			<li class="list-group-item todo" ng-repeat="t in vm.todos | filter:vm.statusFilter track by $index">
+				<input type="checkbox" class="toggle" ng-model="t.completed" ng-disabled="vm.pending" ng-change="vm.toggleCompleted(t, $index)">
+				<span ng-class="{true: 'completed'}[t.completed]" class="content">{{t.title}}</span>
+				<span class="remove" ng-click="vm.remove($index)">X</span>
+			</li>
+			<li class="list-group-item footer">
+				<span>{{vm.uncompleted}} item left</span>
+				<span class="filter-btn" ng-class="{selected: vm.status=='all'}" ng-click="vm.filterTodo(1)">All</span>
+				<span class="filter-btn" ng-class="{selected: vm.status=='active'}" ng-click="vm.filterTodo(2)">Active</span>
+				<span class="filter-btn" ng-class="{selected: vm.status=='completed'}" ng-click="vm.filterTodo(3)">Completed</span>
+				<span class="pull-right clear-btn" ng-click="vm.clearCompleted()">Clear Completed</span>
+			</li>
+		</ul>
+	</section>
+</section>
