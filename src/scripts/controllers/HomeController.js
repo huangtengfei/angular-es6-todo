@@ -16,8 +16,8 @@ export default class HomeController {
 
 	    (() => {
 	    	vm.service.list()
-		    	.then(result => {
-			    	vm.todos = result;
+		    	.then((result) => {
+			    	vm.todos = result;			   
 			    });
 	    })();
 
@@ -27,14 +27,21 @@ export default class HomeController {
 	    }, true);
 
 	    vm.add = () => {
+	    	if(!vm.newTodo){
+	    		return;
+	    	}
 	    	let todo = {
 				title: vm.newTodo,
 				completed: false
 			};
+			vm.pending = true;
 			vm.service.create(todo)
 				.then(() => {
 					vm.newTodo = '';
-				});
+				})
+				.finally(() => {
+					vm.pending = false;
+				})
 		};
 
 		vm.toggleCompleted = (item, index) => {
@@ -50,5 +57,12 @@ export default class HomeController {
 		vm.clearCompleted = () => {
 			vm.service.clear();
 		};
+
+		// use status change class, use statusFilter filter todos in the view 
+		vm.filterTodo = (status) => {
+			vm.status = (status === 1) ? 'all' : (status === 2) ? 'active' : 'completed';
+			vm.statusFilter = (status === 1) ? 
+					{} : (status === 2) ? {completed: false} : {completed: true};
+		}
 	}
 }

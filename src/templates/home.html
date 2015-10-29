@@ -27,7 +27,19 @@
 	.footer span:first-child {
 		margin-right: 100px;
 	}
-	.clear-btn:hover{
+	.filter-btn {
+		padding: 3px 5px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+	.filter-btn:hover {
+		border-color: rgba(175, 47, 47, 0.1);
+	}
+	.filter-btn.selected {
+		border-color: rgba(175, 47, 47, 0.2);
+	}
+	.clear-btn:hover {
 		text-decoration: underline;
 		cursor: pointer;
 	}
@@ -37,16 +49,16 @@
 	<input type="text" class="form-control new-todo" ng-model="vm.newTodo" 
 		placeholder="What needs to be done?">
 	<ul class="list-group">
-		<li class="list-group-item todo" ng-repeat="t in vm.todos">
-			<input type="checkbox" ng-model="t.completed" ng-change="vm.toggleCompleted(t, $index)">
+		<li class="list-group-item todo" ng-repeat="t in vm.todos | filter:vm.statusFilter">
+			<input type="checkbox" ng-model="t.completed" ng-disabled="vm.pending" ng-change="vm.toggleCompleted(t, $index)">
 			<span ng-class="{true: 'completed'}[t.completed]">{{t.title}}</span>
 			<span class="remove" ng-click="vm.remove($index)">X</span>
 		</li>
 		<li class="list-group-item footer">
 			<span>{{vm.uncompleted}} item left</span>
-			<span>All</span>
-			<span>Active</span>
-			<span>Completed</span>
+			<span class="filter-btn" ng-class="{selected: vm.status=='all'}" ng-click="vm.filterTodo(1)">All</span>
+			<span class="filter-btn" ng-class="{selected: vm.status=='active'}" ng-click="vm.filterTodo(2)">Active</span>
+			<span class="filter-btn" ng-class="{selected: vm.status=='completed'}" ng-click="vm.filterTodo(3)">Completed</span>
 			<span class="pull-right clear-btn" ng-click="vm.clearCompleted()">Clear Completed</span>
 		</li>
 	</ul>
