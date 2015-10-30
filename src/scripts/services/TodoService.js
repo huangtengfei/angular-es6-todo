@@ -1,7 +1,7 @@
 
-export default class todoLocService {
+export default class todoService {
 
-	/*@ngInject;*/
+	/*@ngInject*/
 	constructor($q) {
 		this._$q = $q;
 		this.STORAGE_ID = 'todos-angularjs';

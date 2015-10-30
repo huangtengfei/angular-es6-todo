@@ -1,4 +1,4 @@
-/* You could also export multiple functions (or classes) from one file. */
+/* define many filters in one file. */
 
 export function UpperFilter() {
 	return function(input) {

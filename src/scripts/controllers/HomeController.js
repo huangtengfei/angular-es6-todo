@@ -1,5 +1,4 @@
-
-// import Todo from '../model/Todo';
+import Todo from '../models/Todo';
 
 export default class HomeController {
 
@@ -10,54 +9,45 @@ export default class HomeController {
 	/*@ngInject*/
 	constructor($scope, $filter, TodoService) {
 
-		this.service = TodoService;
+		this.todo = new Todo(TodoService);
+
 		this.todos = [];
 		this.uncompleted = 0;
+		this.status = 'all';
 
-	    (() => {
-	    	this.service.list()
-		    	.then((result) => {
-			    	this.todos = result;			   
-			    });
-	    })();
+		this.todo.list().then((result) => {
+			this.todos = result;
+		});
 
 	    // use $scope just for use $watch
 	    $scope.$watch('vm.todos', () => {
 	    	this.uncompleted = $filter('filter')(this.todos, {completed: false}).length;
 	    }, true);	  
-		
-	}
-
-	toggleCompleted(item) {
-		this.service.update(item, this.todos.indexOf(item)).then(() => {}, () => {
-			item.completed = !item.completed;
-		});
 	}
 
 	add() {
-    	if(!this.newTodo){
-    		return;
-    	}
-    	let todo = {
-			title: this.newTodo,
-			completed: false
-		};
 		this.pending = true;
-		this.service.create(todo)
-			.then(() => {
-				this.newTodo = '';
-			})
-			.finally(() => {
-				this.pending = false;
-			});
+    	this.todo.create(this.newTodo).then(() => {
+			this.newTodo = '';
+		}).finally(() => {
+			this.pending = false;
+		});
 	}
 
 	remove(item) {
-		this.service.delete(this.todos.indexOf(item));
+		this.todo.delete(this.todos.indexOf(item));
+	}
+
+	toggleCompleted(item) {
+		this.todo.update(item, this.todos.indexOf(item)).then(() => {
+			// if success, do nothing
+		}, () => {
+			item.completed = !item.completed;	// if error, change todo's status to previous
+		});
 	}
 
 	clearCompleted() {
-		this.service.clear();
+		this.todo.clear();
 	}
 
 	// use status change selected style, use statusFilter filter todos in the view 
