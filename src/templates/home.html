@@ -7,9 +7,9 @@
 	<section>
 		<ul class="list-group">
 			<li class="list-group-item todo" ng-repeat="t in vm.todos | filter:vm.statusFilter track by $index">
-				<input type="checkbox" class="toggle" ng-model="t.completed" ng-disabled="vm.pending" ng-change="vm.toggleCompleted(t, $index)">
+				<input type="checkbox" class="toggle" ng-model="t.completed" ng-disabled="vm.pending" ng-change="vm.toggleCompleted(t)">
 				<span ng-class="{true: 'completed'}[t.completed]" class="content">{{t.title}}</span>
-				<span class="remove" ng-click="vm.remove($index)">X</span>
+				<span class="remove" ng-click="vm.remove(t)">X</span>
 			</li>
 			<li class="list-group-item footer">
 				<span>{{vm.uncompleted}} item left</span>
