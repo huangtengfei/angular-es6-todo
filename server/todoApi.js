@@ -8,6 +8,7 @@ let api = {};
 
 api.list = () => {
 
+	// 在真实项目中，此处的数据应该是异步从数据库获取的，所以此处用 promise 
 	let defer = q.defer();
 
 	setTimeout(() => {
