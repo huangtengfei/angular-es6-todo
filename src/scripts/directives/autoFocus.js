@@ -4,7 +4,7 @@ export default class AutoFocus {
 		this.restrict = 'A';
 
 		this.scope = {
-			autoFocus: '=autoFocus'
+			autoFocus: '='
 		};
 	}
 
