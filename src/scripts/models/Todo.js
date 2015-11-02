@@ -4,35 +4,65 @@
 
 export default class Todo {
 
-	constructor(service) {
-		this.service = service;
+	/*@ngInject*/
+	constructor($q, service) {
+		this.q = $q;
+		this.service = service;	
 	}
 
 	list() {
-		return this.service.list();
+		let defer = this.q.defer();
+		this.service.list((result) => {
+			defer.resolve(result);
+		});
+		return defer.promise;
 	}
 
 	create(newTodo) {
-		if(!newTodo){
-    		return;
-    	}
     	let todo = {
 			title: newTodo,
 			completed: false
 		};
-		return this.service.create(todo);
+		let defer = this.q.defer();
+		this.service.create(todo, (result) => {
+			defer.resolve(result);
+		});
+		return defer.promise;
 	}
 
-	delete(todo) {
-		return this.service.delete(todo);
+	delete(todoId) {
+		let defer = this.q.defer();
+		this.service.delete({params: todoId}, (result) => {
+			defer.resolve(result);
+		});
+		return defer.promise;
 	}
 
-	update(todo, index) {
-		return this.service.update(todo, index);
+	update(todo) {
+		let defer = this.q.defer();
+		this.service.update({params: todo.todoId}, todo, (result) => {
+			defer.resolve(result);
+		});
+		return defer.promise;
 	}
 
-	clear() {
-		return this.service.clear();
+	clear(todos) {
+		let completedCol = [];
+		let uncompletedCol = [];
+		let defer = this.q.defer();
+		todos.forEach((todo) => {
+			if(todo.completed) {
+				completedCol.push({
+					todoId: todo.todoId
+				});
+			}else {
+				uncompletedCol.push(todo);
+			}
+		})
+		this.service.clear(completedCol, (result) => {
+			defer.resolve(uncompletedCol);
+		})
+		return defer.promise;
 	}
 
 }

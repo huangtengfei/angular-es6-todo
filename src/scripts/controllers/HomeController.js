@@ -7,16 +7,16 @@ export default class HomeController {
 	  will annotate the constructor after compiling for minification.
 	*/
 	/*@ngInject*/
-	constructor($scope, $filter, TodoService) {
+	constructor($scope, $filter, $q, TodoFactory) {
 
-		this.todo = new Todo(TodoService);
+		this.todo = new Todo($q, TodoFactory);
 
 		this.todos = [];
 		this.uncompleted = 0;
 		this.status = 'all';
 
 		this.todo.list().then((result) => {
-			this.todos = result;
+			this.todos = result;	
 		});
 
 	    // use $scope just for use $watch
@@ -25,29 +25,37 @@ export default class HomeController {
 	    }, true);	  
 	}
 
-	add() {
+	add() {		
+		if(!this.newTodo) {
+			return;
+		}
 		this.pending = true;
-    	this.todo.create(this.newTodo).then(() => {
+    	this.todo.create(this.newTodo).then((result) => {
+    		this.todos.push(result);
 			this.newTodo = '';
 		}).finally(() => {
 			this.pending = false;
 		});
 	}
 
-	remove(item) {
-		this.todo.delete(this.todos.indexOf(item));
+	remove(todo) {
+		this.todo.delete(todo.todoId).then((result) => {
+			this.todos.splice(this.todos.indexOf(todo), 1);
+		})
 	}
 
-	toggleCompleted(item) {
-		this.todo.update(item, this.todos.indexOf(item)).then(() => {
+	toggleCompleted(todo) {
+		this.todo.update(todo).then(() => {
 			// if success, do nothing
 		}, () => {
-			item.completed = !item.completed;	// if error, change todo's status to previous
+			todo.completed = !todo.completed;	// if error, change todo's status to previous
 		});
 	}
 
 	clearCompleted() {
-		this.todo.clear();
+		this.todo.clear(this.todos).then((result) => {
+			this.todos = result;
+		})
 	}
 
 	// use status change selected style, use statusFilter filter todos in the view 

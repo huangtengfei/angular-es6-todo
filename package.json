@@ -32,5 +32,11 @@
     "jshint-stylish": "^2.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "q": "^1.4.1",
+    "underscore": "^1.8.3"
   }
 }
